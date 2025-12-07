@@ -191,25 +191,29 @@ function flashBump(){
 }
 
 /* --- GMOD API --- */
-window.GameDetails = function(name, url, map, maxplayers, steamid, gamemode, volume){
-    document.getElementById("servername-top").textContent = name || "Infinity Gaming";
+window.GameDetails = function(serverName, map, maxplayers, playerName, steamID, gamemode, volume){
+    // NAZWA SERWERA U GÓRY
+    document.getElementById("servername-top").textContent = serverName || "Infinity Gaming";
     document.getElementById("map-info").innerHTML = "Mapa: <strong>"+(map||"-")+"</strong>";
     document.getElementById("players-info").textContent = "Gracze: 0 / " + maxplayers;
 
-    document.getElementById("playername").textContent = name || "Gracz";
-    document.getElementById("playersteam").textContent = "SteamID: " + steamid;
+    // LEWY DÓŁ – AVATAR + NAZWA GRACZA
+    document.getElementById("playername").textContent = playerName || "Gracz";
+    document.getElementById("playersteam").textContent = "SteamID: " + (steamID || "...");
 
-    if(steamid){
-        const last2 = steamid.slice(-2).toLowerCase();
+    if(steamID){
+        const last2 = steamID.slice(-2).toLowerCase();
         document.getElementById("avatar").style.backgroundImage =
             "url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/"
-            + last2 + "/" + steamid + "_full.jpg)";
+            + last2 + "/" + steamID + "_full.jpg)";
     }
 
+    // MUZYKA
     let aud = document.getElementById("music");
     aud.volume = (typeof volume === 'number') ? volume : 0.35;
     aud.play().catch(()=>{});
 };
+
 
 window.SetFilesTotal = function(total){
     window._total = Number(total)||0;
