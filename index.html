@@ -1,4 +1,3 @@
-<!-- Imperial Style Loading Screen (Cleaner + Video Background) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -154,38 +153,35 @@ h1 {
 .player-name { font-size: 18px; font-weight: 600; }
 .player-steam { font-size: 13px; opacity: 0.75; margin-top: 3px; }
 /* ===== ANIMATIONS / MOTION ===== */
-/* entrance */
 .card{transform:translateY(18px);opacity:0;transition:transform .72s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
 .right-info{transform:translateY(6px);opacity:0;transition:transform .9s cubic-bezier(.2,.95,.2,1), opacity .7s ease}
 .bottom-bar{transform:translateY(18px);opacity:0;transition:transform .7s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
 .panel, #file, #status, .progress-meta {opacity:0;transition:opacity .45s ease .2s}
 
-/* visible state toggled by JS */
 body.loaded .card{transform:translateY(0);opacity:1}
 body.loaded .right-info{transform:translateY(0);opacity:1}
 body.loaded .bottom-bar{transform:translateY(0);opacity:1}
 body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progress-meta{opacity:1}
 
-/* loader glow pulse */
 .loader-ring{box-shadow:0 0 18px var(--red-glow);}
 @keyframes ringPulse{0%{box-shadow:0 0 10px rgba(224,0,26,0.08)}50%{box-shadow:0 0 34px rgba(224,0,26,0.28)}100%{box-shadow:0 0 10px rgba(224,0,26,0.08)}}
 .loader-ring.pulse{animation: spin 2.8s linear infinite, ringPulse 1.9s ease-in-out infinite}
 
-/* progress bump */
 .progressline.bump{transform:translateY(-3px);box-shadow:0 0 26px var(--red-glow);transition:transform .18s ease, box-shadow .18s ease}
 .bump{transform:translateY(-6px);transition:transform .22s cubic-bezier(.2,.9,.2,1)}
 
-/* subtle float for right-info */
 @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
 .right-info.float{animation:floaty 7s ease-in-out infinite}
 </style>
 </head>
 <body>
+
 <div class="bg-video">
   <video autoplay muted loop>
     <source src="https://cdn.pixabay.com/vimeo/276343549/space-16449.mp4" type="video/mp4" />
   </video>
 </div>
+
 <div class="main-wrap">
   <div class="card">
     <h1 id="servername">Infinity Gaming</h1>
@@ -203,7 +199,12 @@ body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progres
       <div id="status">Ładowanie...</div>
       <div id="file"></div>
 
-      <div class="progressbar"><div id="progressline" class="progressline"></div></div>
+      <!-- PRZYWRÓCONY ELEMENT -->
+      <div id="progress" style="font-size:14px; opacity:0.85; margin-top:6px;">Pliki: 0 / 0</div>
+
+      <div class="progressbar">
+        <div id="progressline" class="progressline"></div>
+      </div>
 
       <div class="progress-meta">
         <div id="count">0 / 0</div>
@@ -214,13 +215,11 @@ body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progres
 
   <div class="right-info">
     <h2>INFORMACJE</h2>
-    <div class="info-line" id="map-info">
-  Mapa:
-  <a href="https://example.com/path?Map=%m">https://example.com/path?Map=%m</a>
-</div>
+    <div class="info-line" id="map-info">Mapa: --</div>
     <div class="info-line" id="players-info">Gracze: 0 / 0</div>
   </div>
 </div>
+
 <div class="bottom-bar">
   <div class="avatar" id="avatar"></div>
   <div>
@@ -228,13 +227,14 @@ body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progres
     <div class="player-steam" id="playersteam">SteamID: --</div>
   </div>
 </div>
+
 <audio id="music" src="https://cdn.pixabay.com/audio/2022/03/15/audio_8e3cf3a039.mp3" loop preload="auto"></audio>
+
 <script>
 function animateValue(el, start, end, duration){
   const startTime = performance.now();
   function tick(now){
     const t = Math.min(1, (now-startTime)/duration);
-    // ease in-out
     const eased = t<0.5 ? 2*t*t : -1 + (4-2*t)*t;
     const v = Math.round(start + (end-start)*eased);
     el.textContent = v + "%";
@@ -243,34 +243,38 @@ function animateValue(el, start, end, duration){
   requestAnimationFrame(tick);
 }
 
-// small visual helpers
 function flashBump(){
   const line = document.getElementById('progressline');
   const pct = document.getElementById('pct');
-  if(!line || !pct) return;
   line.classList.add('bump');
   pct.classList.add('bump');
-  setTimeout(()=>{line.classList.remove('bump'); pct.classList.remove('bump');}, 360);
+  setTimeout(()=>{ line.classList.remove('bump'); pct.classList.remove('bump');}, 360);
 }
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  // add loaded class for entrance transitions
   setTimeout(()=> document.body.classList.add('loaded'), 80);
-  // make right-info gently float
-  const ri = document.querySelector('.right-info'); if(ri) ri.classList.add('float');
-  // give loader ring subtle pulse
-  const ring = document.querySelector('.loader-ring'); if(ring) ring.classList.add('pulse');
+  document.querySelector('.right-info').classList.add('float');
+  document.querySelector('.loader-ring').classList.add('pulse');
 });
+
+/* =============================
+   ✔ GMOD API FIXED
+============================= */
 window.GameDetails = function(name, url, map, maxplayers, steamid, gamemode, volume){
-  document.getElementById("servername").textContent = name;
-  document.getElementById("map-info").textContent = "Mapa: " + map;
-  document.getElementById("players-info").textContent = `Gracze: 0 / ${maxplayers}`;
+  document.getElementById("servername").textContent = name || "Infinity Gaming";
+
+  // MAPA
+  document.getElementById("map-info").innerHTML =
+    "Mapa: <strong>" + (map || "--") + "</strong>";
+
+  document.getElementById("players-info").textContent =
+    `Gracze: 0 / ${maxplayers}`;
+
   document.getElementById("playersteam").textContent = "SteamID: " + steamid;
   document.getElementById("playername").textContent = "User";
 
-  // Set avatar via SteamID
   if(steamid){
-    document.getElementById("avatar").style.backgroundImage = 
+    document.getElementById("avatar").style.backgroundImage =
       `url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/`+
       steamid.slice(-2).toLowerCase()+`/`+steamid+`_full.jpg)`;
   }
@@ -282,8 +286,13 @@ window.GameDetails = function(name, url, map, maxplayers, steamid, gamemode, vol
 
 window.SetFilesTotal = function(total){
   window._total = Number(total)||0;
-  document.getElementById("progress").textContent = `Pliki: 0 / ${window._total}`;
-  document.getElementById("count").textContent = `Pliki: 0 / ${window._total}`;
+
+  document.getElementById("progress").textContent =
+    `Pliki: 0 / ${window._total}`;
+
+  document.getElementById("count").textContent =
+    `0 / ${window._total}`;
+
   document.getElementById("pct").textContent = "0%";
   document.getElementById("progressline").style.width = "0%";
 };
@@ -293,23 +302,33 @@ window.SetFilesNeeded = function(needed){
   const dl = (window._total||0) - n;
   const pct = window._total>0 ? Math.round((dl/window._total)*100) : 0;
 
-  document.getElementById("progress").textContent = `Pliki: ${dl} / ${window._total}`;
-  document.getElementById("count").textContent = `Pliki: ${dl} / ${window._total}`;
-  document.getElementById("players-info").textContent = `Gracze: ? / ?`; // No API for live count
+  document.getElementById("progress").textContent =
+    `Pliki: ${dl} / ${window._total}`;
+
+  document.getElementById("count").textContent =
+    `${dl} / ${window._total}`;
 
   document.getElementById("progressline").style.width = pct + "%";
-  animateValue(document.getElementById("pct"), Number(document.getElementById("pct").textContent.replace('%','')) || 0, pct, 420);
-  // small visual feedback
+
+  animateValue(
+    document.getElementById("pct"),
+    Number(document.getElementById("pct").textContent.replace('%','')) || 0,
+    pct,
+    420
+  );
+
   flashBump();
 };
 
 window.DownloadingFile = function(file){
-  document.getElementById("file").textContent = file ? `Pobieranie: ${file}` : "";
+  document.getElementById("file").textContent =
+    file ? `Pobieranie: ${file}` : "";
 };
 
 window.SetStatusChanged = function(status){
   document.getElementById("status").textContent = status;
 };
 </script>
+
 </body>
 </html>
