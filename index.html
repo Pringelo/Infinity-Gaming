@@ -1,227 +1,315 @@
+<!-- Imperial Style Loading Screen (Cleaner + Video Background) -->
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Infinity Gaming — Loading</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title>Imperial Network — Loading</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-
-/* ============================
-   GLOBAL
-============================ */
-html,body{
-    margin:0;
-    padding:0;
-    overflow:hidden;
-    height:100%;
-    background:black;
-    font-family:Arial,Helvetica,sans-serif;
-    color:white;
+:root {
+  --black: #07080a;
+  --panel: #0d0f12;
+  --red: #e0001a;
+  --red-glow: rgba(224, 0, 26, 0.55);
+  --light: #d7d7d7;
+  --soft: rgba(255,255,255,0.05);
 }
-
-/* ============================
-   DYNAMIC SPACE BACKGROUND
-============================ */
-.bg{
-    position:fixed;
-    inset:0;
-    background:#000 url('https://i.imgur.com/3QXx1hM.jpg') center/cover no-repeat;
-    filter:brightness(0.32);
-    z-index:-3;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  color: white;
+  font-family: Inter, Arial, sans-serif;
 }
-
-/* Parallax stars layer */
-.stars{
-    position:fixed;
-    inset:-50% 0 0 -50%;
-    width:200%;
-    height:200%;
-    background:url('https://i.imgur.com/5KXKX9C.png') repeat;
-    opacity:0.45;
-    animation:spaceMove 75s linear infinite;
-    z-index:-2;
+/* ===== BACKGROUND VIDEO ===== */
+.bg-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: -10;
+  opacity: 0.45;
+  filter: blur(3px) brightness(0.55);
 }
-
-@keyframes spaceMove{
-    from{ transform:translate(0,0) }
-    to{ transform:translate(-800px,-800px) }
+.bg-video video {
+  width: 100%; height: 100%;
+  object-fit: cover;
 }
-
-/* ============================
-   HOLOGRAM PANEL
-============================ */
-.wrap{
-    position:relative;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:20px;
-    backdrop-filter:blur(4px);
+/* ===== LAYOUT ===== */
+.main-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -52%);
+  width: 85%; max-width: 1100px;
+  display: flex; gap: 35px;
 }
-
-h1{
-    font-size:54px;
-    margin:0;
-    text-shadow:0 0 25px #00eaff, 0 0 10px #00eaff;
-    letter-spacing:3px;
+.card {
+  flex: 1;
+  background: var(--panel);
+  border: 1px solid var(--soft);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
 }
-
-.subtitle{
-    margin-top:8px;
-    font-size:16px;
-    opacity:0.9;
+h1 {
+  margin: 0 0 12px;
+  font-size: 32px;
 }
-
-/* ============================
-   HOLOGRAM LOADER
-============================ */
-.loader{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    border:6px solid rgba(0,255,255,0.1);
-    border-top-color:#00eaff;
-    animation:spin 1s linear infinite;
-    margin:22px 0 10px;
-    box-shadow:0 0 20px #00eaff80;
+/* ===== LOADER ===== */
+.loader {
+  width: 150px; height: 150px;
+  margin: 20px auto;
+  border-radius: 50%;
+  position: relative;
 }
-
-@keyframes spin{
-    to{ transform:rotate(360deg) }
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--red);
+  box-shadow: 0 0 18px var(--red-glow);
+  animation: spin 2.8s linear infinite;
 }
-
-/* ============================
-   STATUS PANEL
-============================ */
-.panel{
-    margin-top:15px;
-    padding:15px 25px;
-    border:1px solid rgba(0,255,255,0.25);
-    border-radius:10px;
-    background:rgba(0,0,0,0.35);
-    backdrop-filter:blur(3px);
-    max-width:420px;
+.loader-core {
+  position: absolute;
+  inset: 34px;
+  background: #111318;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.06);
+  display: flex; justify-content: center; align-items: center;
 }
-
-#status{ font-size:18px; margin-bottom:8px; }
-#file{ font-size:14px; opacity:0.9; }
-#progress{ font-size:14px; opacity:0.9; margin-top:4px; }
-
-/* ============================
-   PROGRESS LINE
-============================ */
-.progressbar{
-    margin-top:12px;
-    width:100%;
-    height:6px;
-    background:rgba(255,255,255,0.15);
-    border-radius:4px;
-    overflow:hidden;
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* ===== PROGRESS ===== */
+.panel {
+  background: #0b0d10;
+  border: 1px solid var(--soft);
+  padding: 18px;
+  margin-top: 20px;
+  border-radius: 8px;
 }
-.progressline{
-    height:100%;
-    width:0%;
-    background:#00eaff;
-    box-shadow:0 0 10px #00eaff;
-    transition:width .25s;
-}
+#status { font-size: 18px; margin-bottom: 4px; }
+#file { font-size: 13px; opacity: 0.75; margin-bottom: 8px; }
 
-/* ============================
-   LOGO TOP LEFT
-============================ */
-.logo{
-    position:absolute;
-    top:20px;
-    left:20px;
-    padding:8px 16px;
-    font-size:18px;
-    border:1px solid rgba(0,255,255,0.4);
-    background:rgba(0,0,0,0.4);
-    border-radius:8px;
-    text-shadow:0 0 10px #00eaff;
+.progressbar {
+  width: 100%; height: 12px;
+  background: #1b1d22;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 10px;
 }
-
-/* MOBILE */
-@media(max-width:480px){
-    h1{ font-size:32px; }
-    .loader{ width:70px; height:70px; }
+.progressline {
+  height: 100%; width: 0%;
+  background: var(--red);
+  box-shadow: 0 0 14px var(--red-glow);
+  transition: width .35s ease-out;
 }
+.progress-meta {
+  margin-top: 10px;
+  display: flex; justify-content: space-between;
+  font-size: 13px;
+  color: var(--light);
+}
+/* ===== RIGHT INFO BAR ===== */
+.right-info {
+  width: 260px;
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--soft);
+  box-shadow: 0 0 40px rgba(0,0,0,0.45);
+}
+.right-info h2 {
+  color: var(--red);
+  text-shadow: 0 0 12px var(--red-glow);
+  font-size: 22px;
+  margin-top: 0;
+}
+.info-line {
+  margin: 8px 0;
+  font-size: 15px;
+  opacity: 0.85;
+}
+/* ===== BOTTOM PLAYER BAR ===== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: #0f1114;
+  border-top: 1px solid var(--soft);
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  gap: 15px;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.45);
+}
+.avatar {
+  width: 58px; height: 58px;
+  border-radius: 6px;
+  background: #222;
+  background-size: cover;
+  background-position: center;
+}
+.player-name { font-size: 18px; font-weight: 600; }
+.player-steam { font-size: 13px; opacity: 0.75; margin-top: 3px; }
+/* ===== ANIMATIONS / MOTION ===== */
+/* entrance */
+.card{transform:translateY(18px);opacity:0;transition:transform .72s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
+.right-info{transform:translateY(6px);opacity:0;transition:transform .9s cubic-bezier(.2,.95,.2,1), opacity .7s ease}
+.bottom-bar{transform:translateY(18px);opacity:0;transition:transform .7s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
+.panel, #file, #status, .progress-meta {opacity:0;transition:opacity .45s ease .2s}
 
+/* visible state toggled by JS */
+body.loaded .card{transform:translateY(0);opacity:1}
+body.loaded .right-info{transform:translateY(0);opacity:1}
+body.loaded .bottom-bar{transform:translateY(0);opacity:1}
+body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progress-meta{opacity:1}
+
+/* loader glow pulse */
+.loader-ring{box-shadow:0 0 18px var(--red-glow);}
+@keyframes ringPulse{0%{box-shadow:0 0 10px rgba(224,0,26,0.08)}50%{box-shadow:0 0 34px rgba(224,0,26,0.28)}100%{box-shadow:0 0 10px rgba(224,0,26,0.08)}}
+.loader-ring.pulse{animation: spin 2.8s linear infinite, ringPulse 1.9s ease-in-out infinite}
+
+/* progress bump */
+.progressline.bump{transform:translateY(-3px);box-shadow:0 0 26px var(--red-glow);transition:transform .18s ease, box-shadow .18s ease}
+.bump{transform:translateY(-6px);transition:transform .22s cubic-bezier(.2,.9,.2,1)}
+
+/* subtle float for right-info */
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+.right-info.float{animation:floaty 7s ease-in-out infinite}
 </style>
 </head>
 <body>
+<div class="bg-video">
+  <video autoplay muted loop>
+    <source src="https://cdn.pixabay.com/vimeo/276343549/space-16449.mp4" type="video/mp4" />
+  </video>
+</div>
+<div class="main-wrap">
+  <div class="card">
+    <h1 id="servername">Imperial Network</h1>
 
-<div class="bg"></div>
-<div class="stars"></div>
-
-<div class="logo">Infinity Gaming</div>
-
-<div class="wrap">
-
-    <h1 id="servername">Infinity Gaming</h1>
-
-    <div class="loader"></div>
-
-    <div class="subtitle" id="mapname">Ładowanie mapy...</div>
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-core">
+        <svg width="34" height="34" viewBox="0 0 24 24" stroke="var(--red)" fill="none" stroke-width="1.4">
+          <circle cx="12" cy="12" r="8" />
+        </svg>
+      </div>
+    </div>
 
     <div class="panel">
-        <div id="status">Ładowanie...</div>
-        <div id="file"></div>
-        <div id="progress"></div>
+      <div id="status">Ładowanie...</div>
+      <div id="file"></div>
 
-        <div class="progressbar">
-            <div class="progressline" id="progressline"></div>
-        </div>
+      <div class="progressbar"><div id="progressline" class="progressline"></div></div>
+
+      <div class="progress-meta">
+        <div id="count">0 / 0</div>
+        <div id="pct">0%</div>
+      </div>
     </div>
+  </div>
+
+  <div class="right-info">
+    <h2>SERVER DATA</h2>
+    <div class="info-line" id="map-info">
+  Mapa:
+  <a href="https://example.com/path?Map=%m">https://example.com/path?Map=%m</a>
 </div>
-
+    <div class="info-line" id="players-info">Gracze: 0 / 0</div>
+  </div>
+</div>
+<div class="bottom-bar">
+  <div class="avatar" id="avatar"></div>
+  <div>
+    <div class="player-name" id="playername">User</div>
+    <div class="player-steam" id="playersteam">SteamID: --</div>
+  </div>
+</div>
 <audio id="music" src="https://cdn.pixabay.com/audio/2022/03/15/audio_8e3cf3a039.mp3" loop preload="auto"></audio>
-
 <script>
+function animateValue(el, start, end, duration){
+  const startTime = performance.now();
+  function tick(now){
+    const t = Math.min(1, (now-startTime)/duration);
+    // ease in-out
+    const eased = t<0.5 ? 2*t*t : -1 + (4-2*t)*t;
+    const v = Math.round(start + (end-start)*eased);
+    el.textContent = v + "%";
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 
-/* ============================
-   GMOD → PAGE API
-============================ */
+// small visual helpers
+function flashBump(){
+  const line = document.getElementById('progressline');
+  const pct = document.getElementById('pct');
+  if(!line || !pct) return;
+  line.classList.add('bump');
+  pct.classList.add('bump');
+  setTimeout(()=>{line.classList.remove('bump'); pct.classList.remove('bump');}, 360);
+}
 
-window.GameDetails = function(servername, serverurl, mapname, maxplayers, steamid, gamemode, volume){
-    document.getElementById("servername").textContent = servername || "Infinity Gaming";
-    document.querySelector(".logo").textContent = servername || "Infinity Gaming";
-    document.getElementById("mapname").textContent = "Mapa: " + (mapname || "--");
+document.addEventListener('DOMContentLoaded', ()=>{
+  // add loaded class for entrance transitions
+  setTimeout(()=> document.body.classList.add('loaded'), 80);
+  // make right-info gently float
+  const ri = document.querySelector('.right-info'); if(ri) ri.classList.add('float');
+  // give loader ring subtle pulse
+  const ring = document.querySelector('.loader-ring'); if(ring) ring.classList.add('pulse');
+});
+window.GameDetails = function(name, url, map, maxplayers, steamid, gamemode, volume){
+  document.getElementById("servername").textContent = name;
+  document.getElementById("map-info").textContent = "Mapa: " + map;
+  document.getElementById("players-info").textContent = `Gracze: 0 / ${maxplayers}`;
+  document.getElementById("playersteam").textContent = "SteamID: " + steamid;
+  document.getElementById("playername").textContent = "User";
 
-    let aud = document.getElementById("music");
-    aud.volume = volume || 0.5;
-    aud.play().catch(()=>{});
+  // Set avatar via SteamID
+  if(steamid){
+    document.getElementById("avatar").style.backgroundImage = 
+      `url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/`+
+      steamid.slice(-2).toLowerCase()+`/`+steamid+`_full.jpg)`;
+  }
+
+  let aud = document.getElementById("music");
+  aud.volume = (typeof volume === 'number') ? volume : 0.35;
+  aud.play().catch(()=>{});
 };
 
 window.SetFilesTotal = function(total){
-    window._total = Number(total) || 0;
-    document.getElementById("progress").textContent = "Pliki: 0 / " + window._total;
+  window._total = Number(total)||0;
+  document.getElementById("progress").textContent = `Pliki: 0 / ${window._total}`;
+  document.getElementById("count").textContent = `Pliki: 0 / ${window._total}`;
+  document.getElementById("pct").textContent = "0%";
+  document.getElementById("progressline").style.width = "0%";
 };
 
 window.SetFilesNeeded = function(needed){
-    needed = Number(needed) || 0;
-    window._needed = needed;
+  const n = Number(needed)||0;
+  const dl = (window._total||0) - n;
+  const pct = window._total>0 ? Math.round((dl/window._total)*100) : 0;
 
-    let downloaded = (window._total - needed);
-    let pct = window._total > 0 ? (downloaded/window._total)*100 : 0;
+  document.getElementById("progress").textContent = `Pliki: ${dl} / ${window._total}`;
+  document.getElementById("count").textContent = `Pliki: ${dl} / ${window._total}`;
+  document.getElementById("players-info").textContent = `Gracze: ? / ?`; // No API for live count
 
-    document.getElementById("progress").textContent = "Pliki: " + downloaded + " / " + window._total;
-    document.getElementById("progressline").style.width = pct + "%";
+  document.getElementById("progressline").style.width = pct + "%";
+  animateValue(document.getElementById("pct"), Number(document.getElementById("pct").textContent.replace('%','')) || 0, pct, 420);
+  // small visual feedback
+  flashBump();
 };
 
 window.DownloadingFile = function(file){
-    document.getElementById("file").textContent = file ? ("Pobieranie: " + file) : "";
+  document.getElementById("file").textContent = file ? `Pobieranie: ${file}` : "";
 };
 
 window.SetStatusChanged = function(status){
-    document.getElementById("status").textContent = status;
+  document.getElementById("status").textContent = status;
 };
-
 </script>
-
 </body>
 </html>
