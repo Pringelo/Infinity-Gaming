@@ -1,332 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-<meta charset="utf-8" />
-<title>Imperial Network — Loading</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<title>Infinity Gaming Loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #07080a;
-  --panel: #0d0f12;
-  --red: #e0001a;
-  --red-glow: rgba(224, 0, 26, 0.55);
-  --light: #d7d7d7;
-  --soft: rgba(255,255,255,0.05);
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--black);
-  color: white;
-  font-family: Inter, Arial, sans-serif;
-}
-/* ===== BACKGROUND VIDEO ===== */
-.bg-video {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  z-index: -10;
-  opacity: 0.45;
-  filter: blur(3px) brightness(0.55);
-}
-.bg-video video {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-/* ===== LAYOUT ===== */
-.main-wrap {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -52%);
-  width: 85%; max-width: 1100px;
-  display: flex; gap: 35px;
-}
-.card {
-  flex: 1;
-  background: var(--panel);
-  border: 1px solid var(--soft);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.6);
-}
-h1 {
-  margin: 0 0 12px;
-  font-size: 32px;
-}
-/* ===== LOADER ===== */
-.loader {
-  width: 150px; height: 150px;
-  margin: 20px auto;
-  border-radius: 50%;
-  position: relative;
-}
-.loader-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 3px solid var(--red);
-  box-shadow: 0 0 18px var(--red-glow);
-  animation: spin 2.8s linear infinite;
-}
-.loader-core {
-  position: absolute;
-  inset: 34px;
-  background: #111318;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.06);
-  display: flex; justify-content: center; align-items: center;
-}
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-/* ===== PROGRESS ===== */
-.panel {
-  background: #0b0d10;
-  border: 1px solid var(--soft);
-  padding: 18px;
-  margin-top: 20px;
-  border-radius: 8px;
-}
-#status { font-size: 18px; margin-bottom: 4px; }
-#file { font-size: 13px; opacity: 0.75; margin-bottom: 8px; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif; }
 
-.progressbar {
-  width: 100%; height: 12px;
-  background: #1b1d22;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-.progressline {
-  height: 100%; width: 0%;
-  background: var(--red);
-  box-shadow: 0 0 14px var(--red-glow);
-  transition: width .35s ease-out;
-}
-.progress-meta {
-  margin-top: 10px;
-  display: flex; justify-content: space-between;
-  font-size: 13px;
-  color: var(--light);
-}
-/* ===== RIGHT INFO BAR ===== */
-.right-info {
-  width: 260px;
-  background: var(--panel);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--soft);
-  box-shadow: 0 0 40px rgba(0,0,0,0.45);
-}
-.right-info h2 {
-  color: var(--red);
-  text-shadow: 0 0 12px var(--red-glow);
-  font-size: 22px;
-  margin-top: 0;
-}
-.info-line {
-  margin: 8px 0;
-  font-size: 15px;
-  opacity: 0.85;
-}
-/* ===== BOTTOM PLAYER BAR ===== */
-.bottom-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 80px;
-  background: #0f1114;
-  border-top: 1px solid var(--soft);
-  display: flex;
-  align-items: center;
-  padding: 0 25px;
-  gap: 15px;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.45);
-}
-.avatar {
-  width: 58px; height: 58px;
-  border-radius: 6px;
-  background: #222;
-  background-size: cover;
-  background-position: center;
-}
-.player-name { font-size: 18px; font-weight: 600; }
-.player-steam { font-size: 13px; opacity: 0.75; margin-top: 3px; }
-/* ===== ANIMATIONS / MOTION ===== */
-.card{transform:translateY(18px);opacity:0;transition:transform .72s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
-.right-info{transform:translateY(6px);opacity:0;transition:transform .9s cubic-bezier(.2,.95,.2,1), opacity .7s ease}
-.bottom-bar{transform:translateY(18px);opacity:0;transition:transform .7s cubic-bezier(.2,.95,.2,1), opacity .6s ease}
-.panel, #file, #status, .progress-meta {opacity:0;transition:opacity .45s ease .2s}
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 
-body.loaded .card{transform:translateY(0);opacity:1}
-body.loaded .right-info{transform:translateY(0);opacity:1}
-body.loaded .bottom-bar{transform:translateY(0);opacity:1}
-body.loaded .panel, body.loaded #file, body.loaded #status, body.loaded .progress-meta{opacity:1}
+    background-size: cover;       /* fill screen, keep aspect ratio */
+    background-position: center;  /* center GIF/PNG */
+    background-repeat: no-repeat; /* no tiling */
+    animation: bgfade 10s infinite alternate ease-in-out;
 
-.loader-ring{box-shadow:0 0 18px var(--red-glow);}
-@keyframes ringPulse{0%{box-shadow:0 0 10px rgba(224,0,26,0.08)}50%{box-shadow:0 0 34px rgba(224,0,26,0.28)}100%{box-shadow:0 0 10px rgba(224,0,26,0.08)}}
-.loader-ring.pulse{animation: spin 2.8s linear infinite, ringPulse 1.9s ease-in-out infinite}
+    image-rendering: smooth;        /* default, prevents ugly pixelation */
+}
 
-.progressline.bump{transform:translateY(-3px);box-shadow:0 0 26px var(--red-glow);transition:transform .18s ease, box-shadow .18s ease}
-.bump{transform:translateY(-6px);transition:transform .22s cubic-bezier(.2,.9,.2,1)}
 
-@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
-.right-info.float{animation:floaty 7s ease-in-out infinite}
+
+
+/* Nakładka przyciemniająca */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* przyciemnienie */
+    pointer-events: none;
+    z-index: 1; /* nad GIF, pod tekstem i panelami */
+}
+
+
+
+@keyframes bgfade {
+    0% { background-image:url('https://i.pinimg.com/originals/80/81/9b/80819bf06886f661ec10e5fbc02963c5.gif'); }
+    50% { background-image:url('https://i.pinimg.com/originals/d4/e3/f8/d4e3f818d7a0692f0ac188b2e97edf61.gif'); }
+    100% { background-image:url('https://i.pinimg.com/originals/d4/e3/f8/d4e3f818d7a0692f0ac188b2e97edf61.gif'); }
+}
+
+/* NAZWA SERWERA U GÓRY */
+#servername-top {
+    font-size: 48px;
+    font-weight: 700;
+    margin-top: 40px;
+    text-align: center;
+    color: white; /* zawsze biały */
+    text-shadow: 0 0 10px rgba(255,255,255,0.5); /* opcjonalna delikatna poświata biała */
+    letter-spacing: 1.5px;
+    z-index: 1; /* żeby tekst był nad nakładką */
+    position: relative;
+}
+
+
+    /* PRAWY PANEL - ZWIĘZŁY */
+    #right-panel {
+        position:absolute;
+        right:40px;
+        top:100px;
+        width:320px;
+        padding:24px;
+        border-radius:24px;
+        background:rgba(0, 0, 0, 0.815);
+        backdrop-filter:blur(15px);
+        box-shadow:0 0 50px rgba(0,0,0,1);
+        display:flex;
+        flex-direction:column;
+        gap:2px; /* małe odstępy */
+        z-index: 2; /* nad overlay i tłem */
+    }
+
+    #right-panel h2 {
+        font-size:28px;
+        font-weight:700;
+        margin-bottom:8px;
+        text-transform:uppercase;
+    }
+
+    .line { font-size:16px; opacity:0.92; }
+
+    #progressbar {
+        width:100%; height:10px;
+        background:rgba(255,255,255,0.12);
+        border-radius:20px;
+        overflow:hidden;
+        margin-top:8px;
+    }
+
+    #progressline {
+        width:0%; height:100%;
+        background:white;
+        transition:width .3s ease-out;
+    }
+
+    #pct { font-size:18px; font-weight:600; margin-top:6px; }
+
+    /* LEWY DÓŁ – AVATAR + NAZWA */
+    #player-box {
+        position:absolute;
+        left:30px;
+        bottom:30px;
+        display:flex;
+        align-items:center;
+        background:rgba(0,0,0,0.6);
+        padding:12px 20px;
+        border-radius:14px;
+        backdrop-filter:blur(4px);
+        z-index: 2; /* nad overlay i tłem */
+    }
+
+    #avatar {
+        width:64px; height:64px;
+        border-radius:8px;
+        background-size:cover;
+        background-position:center;
+        margin-right:14px;
+    }
+
+    #playername {
+        font-size:18px;
+        font-weight:600;
+    }
+
+    #playersteam {
+        font-size:14px;
+        opacity:0.85;
+        margin-top:2px;
+    }
+
 </style>
 </head>
+
 <body>
 
-<div class="bg-video">
-  <video autoplay muted loop>
-    <source src="https://cdn.pixabay.com/vimeo/276343549/space-16449.mp4" type="video/mp4" />
-  </video>
+<!-- NAZWA SERWERA -->
+<div id="servername-top">Infinity Gaming</div>
+
+<!-- PRAWY PANEL -->
+<div id="right-panel">
+    <h2>Informacje</h2>
+    <div class="line" id="map-info">Mapa: -</div>
+    <div class="line" id="players-info">Gracze: 0 / 0</div>
+    <div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div>
+    <div class="line" id="status">Ładowanie plików...</div>
+    <div class="line" id="file"></div>
+
+    <div id="progressbar"><div id="progressline"></div></div>
+    <div id="pct">0%</div>
 </div>
 
-<div class="main-wrap">
-  <div class="card">
-    <h1 id="servername">Infinity Gaming</h1>
-
-    <div class="loader">
-      <div class="loader-ring"></div>
-      <div class="loader-core">
-        <svg width="34" height="34" viewBox="0 0 24 24" stroke="var(--red)" fill="none" stroke-width="1.4">
-          <circle cx="12" cy="12" r="8" />
-        </svg>
-      </div>
+<!-- AVATAR + NAZWA -->
+<div id="player-box">
+    <div id="avatar"></div>
+    <div>
+        <div id="playername">Ładowanie...</div>
+        <div id="playersteam">SteamID: ...</div>
     </div>
-
-    <div class="panel">
-      <div id="status">Ładowanie...</div>
-      <div id="file"></div>
-
-      <!-- PRZYWRÓCONY ELEMENT -->
-      <div id="progress" style="font-size:14px; opacity:0.85; margin-top:6px;">Pliki: 0 / 0</div>
-
-      <div class="progressbar">
-        <div id="progressline" class="progressline"></div>
-      </div>
-
-      <div class="progress-meta">
-        <div id="count">0 / 0</div>
-        <div id="pct">0%</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="right-info">
-    <h2>INFORMACJE</h2>
-    <div class="info-line" id="map-info">Mapa: --</div>
-    <div class="info-line" id="players-info">Gracze: 0 / 0</div>
-  </div>
 </div>
 
-<div class="bottom-bar">
-  <div class="avatar" id="avatar"></div>
-  <div>
-    <div class="player-name" id="playername">User</div>
-    <div class="player-steam" id="playersteam">SteamID: --</div>
-  </div>
-</div>
-
-<audio id="music" src="https://cdn.pixabay.com/audio/2022/03/15/audio_8e3cf3a039.mp3" loop preload="auto"></audio>
+<!-- MUZYKA -->
+<audio id="music" loop src="music.mp3"></audio>
 
 <script>
-function animateValue(el, start, end, duration){
-  const startTime = performance.now();
-  function tick(now){
-    const t = Math.min(1, (now-startTime)/duration);
-    const eased = t<0.5 ? 2*t*t : -1 + (4-2*t)*t;
-    const v = Math.round(start + (end-start)*eased);
-    el.textContent = v + "%";
-    if(t < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+function animateValue(el, start, end, duration) {
+    const range = end - start;
+    const startTime = performance.now();
+    function step(now){
+        const progress = Math.min((now - startTime) / duration, 1);
+        el.textContent = Math.round(start + progress * range) + "%";
+        if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
 }
 
 function flashBump(){
-  const line = document.getElementById('progressline');
-  const pct = document.getElementById('pct');
-  line.classList.add('bump');
-  pct.classList.add('bump');
-  setTimeout(()=>{ line.classList.remove('bump'); pct.classList.remove('bump');}, 360);
+    const bar = document.getElementById("progressline");
+    bar.style.boxShadow = "0 0 12px white";
+    setTimeout(()=> bar.style.boxShadow="none", 280);
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  setTimeout(()=> document.body.classList.add('loaded'), 80);
-  document.querySelector('.right-info').classList.add('float');
-  document.querySelector('.loader-ring').classList.add('pulse');
-});
-
-/* =============================
-   ✔ GMOD API FIXED
-============================= */
+/* --- GMOD API --- */
 window.GameDetails = function(name, url, map, maxplayers, steamid, gamemode, volume){
-  document.getElementById("servername").textContent = name || "Infinity Gaming";
+    document.getElementById("servername-top").textContent = name || "Infinity Gaming";
+    document.getElementById("map-info").innerHTML = "Mapa: <strong>"+(map||"-")+"</strong>";
+    document.getElementById("players-info").textContent = "Gracze: 0 / " + maxplayers;
 
-  // MAPA
-  document.getElementById("map-info").innerHTML =
-    "Mapa: <strong>" + (map || "--") + "</strong>";
+    document.getElementById("playername").textContent = name || "Gracz";
+    document.getElementById("playersteam").textContent = "SteamID: " + steamid;
 
-  document.getElementById("players-info").textContent =
-    `Gracze: 0 / ${maxplayers}`;
+    if(steamid){
+        const last2 = steamid.slice(-2).toLowerCase();
+        document.getElementById("avatar").style.backgroundImage =
+            "url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/"
+            + last2 + "/" + steamid + "_full.jpg)";
+    }
 
-  document.getElementById("playersteam").textContent = "SteamID: " + steamid;
-  document.getElementById("playername").textContent = "User";
-
-  if(steamid){
-    document.getElementById("avatar").style.backgroundImage =
-      `url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/`+
-      steamid.slice(-2).toLowerCase()+`/`+steamid+`_full.jpg)`;
-  }
-
-  let aud = document.getElementById("music");
-  aud.volume = (typeof volume === 'number') ? volume : 0.35;
-  aud.play().catch(()=>{});
+    let aud = document.getElementById("music");
+    aud.volume = (typeof volume === 'number') ? volume : 0.35;
+    aud.play().catch(()=>{});
 };
 
 window.SetFilesTotal = function(total){
-  window._total = Number(total)||0;
-
-  document.getElementById("progress").textContent =
-    `Pliki: 0 / ${window._total}`;
-
-  document.getElementById("count").textContent =
-    `0 / ${window._total}`;
-
-  document.getElementById("pct").textContent = "0%";
-  document.getElementById("progressline").style.width = "0%";
+    window._total = Number(total)||0;
+    document.getElementById("pct").textContent = "0%";
+    document.getElementById("progressline").style.width = "0%";
 };
 
 window.SetFilesNeeded = function(needed){
-  const n = Number(needed)||0;
-  const dl = (window._total||0) - n;
-  const pct = window._total>0 ? Math.round((dl/window._total)*100) : 0;
+    const n = Number(needed)||0;
+    const dl = (window._total||0) - n;
+    const pct = window._total>0 ? Math.round((dl/window._total)*100) : 0;
 
-  document.getElementById("progress").textContent =
-    `Pliki: ${dl} / ${window._total}`;
-
-  document.getElementById("count").textContent =
-    `${dl} / ${window._total}`;
-
-  document.getElementById("progressline").style.width = pct + "%";
-
-  animateValue(
-    document.getElementById("pct"),
-    Number(document.getElementById("pct").textContent.replace('%','')) || 0,
-    pct,
-    420
-  );
-
-  flashBump();
+    animateValue(document.getElementById("pct"),
+        Number(document.getElementById("pct").textContent.replace('%',''))||0,
+        pct, 350);
+    document.getElementById("progressline").style.width = pct + "%";
+    flashBump();
 };
 
 window.DownloadingFile = function(file){
-  document.getElementById("file").textContent =
-    file ? `Pobieranie: ${file}` : "";
+    document.getElementById("file").textContent = file ? "Pobieranie: " + file : "";
 };
 
 window.SetStatusChanged = function(status){
-  document.getElementById("status").textContent = status;
+    document.getElementById("status").textContent = status;
 };
 </script>
 
