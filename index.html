@@ -217,21 +217,25 @@ window.GameDetails = function(serverName, map, maxplayers, playerName, steamID, 
 
 window.SetFilesTotal = function(total){
     window._total = Number(total)||0;
-    document.getElementById("pct").textContent = "0%";
+    //document.getElementById("pct").textContent = "0%";
     document.getElementById("progressline").style.width = "0%";
 };
 
 window.SetFilesNeeded = function(needed){
-    const n = Number(needed)||0;
-    const dl = (window._total||0) - n;
-    const pct = window._total>0 ? Math.round((dl/window._total)*100) : 0;
+    const total = window._total || 0;
+    const n = Number(needed) || 0;
+    const loaded = total - n;
+    const pct = total > 0 ? Math.round((loaded / total) * 100) : 0;
 
-    animateValue(document.getElementById("pct"),
-        Number(document.getElementById("pct").textContent.replace('%',''))||0,
-        pct, 350);
+    // Aktualizacja paska ładowania
     document.getElementById("progressline").style.width = pct + "%";
-    flashBump();
+
+    // Efekt błysku paska
+    const bar = document.getElementById("progressline");
+    bar.style.boxShadow = "0 0 12px white";
+    setTimeout(() => bar.style.boxShadow = "none", 280);
 };
+
 
 window.DownloadingFile = function(file){
     document.getElementById("file").textContent = file ? "Pobieranie: " + file : "";
