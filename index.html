@@ -17,18 +17,13 @@ body {
     align-items: center;
     position: relative;
 
-    background-size: cover;       /* fill screen, keep aspect ratio */
-    background-position: center;  /* center GIF/PNG */
-    background-repeat: no-repeat; /* no tiling */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     animation: bgfade 10s infinite alternate ease-in-out;
-
-    image-rendering: smooth;        /* default, prevents ugly pixelation */
+    image-rendering: smooth;
 }
 
-
-
-
-/* Nakładka przyciemniająca */
 body::before {
     content: "";
     position: absolute;
@@ -36,12 +31,10 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* przyciemnienie */
+    background: rgba(0, 0, 0, 0.6);
     pointer-events: none;
-    z-index: 1; /* nad GIF, pod tekstem i panelami */
+    z-index: 1;
 }
-
-
 
 @keyframes bgfade {
     0% { background-image:url('https://i.pinimg.com/originals/80/81/9b/80819bf06886f661ec10e5fbc02963c5.gif'); }
@@ -49,104 +42,96 @@ body::before {
     100% { background-image:url('https://i.pinimg.com/originals/d4/e3/f8/d4e3f818d7a0692f0ac188b2e97edf61.gif'); }
 }
 
-/* NAZWA SERWERA U GÓRY */
 #servername-top {
     font-size: 48px;
     font-weight: 700;
     margin-top: 40px;
     text-align: center;
-    color: white; /* zawsze biały */
-    text-shadow: 0 0 10px rgba(255,255,255,0.5); /* opcjonalna delikatna poświata biała */
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
     letter-spacing: 1.5px;
-    z-index: 1; /* żeby tekst był nad nakładką */
+    z-index: 2;
     position: relative;
 }
 
+#right-panel {
+    position:absolute;
+    right:40px;
+    top:100px;
+    width:320px;
+    padding:24px;
+    border-radius:24px;
+    background:rgba(0, 0, 0, 0.815);
+    backdrop-filter:blur(15px);
+    box-shadow:0 0 50px rgba(0,0,0,1);
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    z-index: 2;
+}
 
-    /* PRAWY PANEL - ZWIĘZŁY */
-    #right-panel {
-        position:absolute;
-        right:40px;
-        top:100px;
-        width:320px;
-        padding:24px;
-        border-radius:24px;
-        background:rgba(0, 0, 0, 0.815);
-        backdrop-filter:blur(15px);
-        box-shadow:0 0 50px rgba(0,0,0,1);
-        display:flex;
-        flex-direction:column;
-        gap:2px; /* małe odstępy */
-        z-index: 2; /* nad overlay i tłem */
-    }
+#right-panel h2 {
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:8px;
+    text-transform:uppercase;
+}
 
-    #right-panel h2 {
-        font-size:28px;
-        font-weight:700;
-        margin-bottom:8px;
-        text-transform:uppercase;
-    }
+.line { font-size:16px; opacity:0.92; }
 
-    .line { font-size:16px; opacity:0.92; }
+#progressbar {
+    width:100%; height:10px;
+    background:rgba(255,255,255,0.12);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:8px;
+}
 
-    #progressbar {
-        width:100%; height:10px;
-        background:rgba(255,255,255,0.12);
-        border-radius:20px;
-        overflow:hidden;
-        margin-top:8px;
-    }
+#progressline {
+    width:0%; height:100%;
+    background:white;
+    transition:width .3s ease-out;
+}
 
-    #progressline {
-        width:0%; height:100%;
-        background:white;
-        transition:width .3s ease-out;
-    }
+#pct { font-size:18px; font-weight:600; margin-top:6px; }
 
-    #pct { font-size:18px; font-weight:600; margin-top:6px; }
+#player-box {
+    position:absolute;
+    left:30px;
+    bottom:30px;
+    display:flex;
+    align-items:center;
+    background:rgba(0,0,0,0.6);
+    padding:12px 20px;
+    border-radius:14px;
+    backdrop-filter:blur(4px);
+    z-index: 2;
+}
 
-    /* LEWY DÓŁ – AVATAR + NAZWA */
-    #player-box {
-        position:absolute;
-        left:30px;
-        bottom:30px;
-        display:flex;
-        align-items:center;
-        background:rgba(0,0,0,0.6);
-        padding:12px 20px;
-        border-radius:14px;
-        backdrop-filter:blur(4px);
-        z-index: 2; /* nad overlay i tłem */
-    }
+#avatar {
+    width:64px; height:64px;
+    border-radius:8px;
+    background-size:cover;
+    background-position:center;
+    margin-right:14px;
+}
 
-    #avatar {
-        width:64px; height:64px;
-        border-radius:8px;
-        background-size:cover;
-        background-position:center;
-        margin-right:14px;
-    }
+#playername {
+    font-size:18px;
+    font-weight:600;
+}
 
-    #playername {
-        font-size:18px;
-        font-weight:600;
-    }
-
-    #playersteam {
-        font-size:14px;
-        opacity:0.85;
-        margin-top:2px;
-    }
-
+#playersteam {
+    font-size:14px;
+    opacity:0.85;
+    margin-top:2px;
+}
 </style>
 </head>
 
 <body>
-
-<!-- NAZWA SERWERA -->
 <div id="servername-top">Infinity Gaming</div>
 
-<!-- PRAWY PANEL -->
 <div id="right-panel">
     <h2>Informacje</h2>
     <div class="line" id="map-info">Mapa: -</div>
@@ -155,12 +140,9 @@ body::before {
     <div></div><div></div><div></div><div></div><div></div>
     <div class="line" id="status">Ładowanie plików...</div>
     <div class="line" id="file"></div>
-
     <div id="progressbar"><div id="progressline"></div></div>
-    <div id="pct">0%</div>
 </div>
 
-<!-- AVATAR + NAZWA -->
 <div id="player-box">
     <div id="avatar"></div>
     <div>
@@ -169,73 +151,59 @@ body::before {
     </div>
 </div>
 
-<!-- MUZYKA -->
 <audio id="music" loop src="music.mp3"></audio>
 
 <script>
-function animateValue(el, start, end, duration) {
-    const range = end - start;
-    const startTime = performance.now();
-    function step(now){
-        const progress = Math.min((now - startTime) / duration, 1);
-        el.textContent = Math.round(start + progress * range) + "%";
-        if(progress < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-}
-
-function flashBump(){
+function updateProgress(loaded, total) {
+    const pct = total > 0 ? Math.round((loaded / total) * 100) : 0;
+    document.getElementById("progressline").style.width = pct + "%";
+    document.getElementById("pct").textContent = pct + "%";
     const bar = document.getElementById("progressline");
     bar.style.boxShadow = "0 0 12px white";
-    setTimeout(()=> bar.style.boxShadow="none", 280);
+    setTimeout(() => bar.style.boxShadow = "none", 280);
 }
 
 /* --- GMOD API --- */
-window.GameDetails = function(serverName, map, maxplayers, playerName, steamID, gamemode, volume){
-    // NAZWA SERWERA U GÓRY
+window.GameDetails = function(serverName, serverURL, mapName, maxPlayers, steamID, gamemode, volume, language){
     document.getElementById("servername-top").textContent = serverName || "Infinity Gaming";
-    document.getElementById("map-info").innerHTML = "Mapa: <strong>"+(map||"-")+"</strong>";
-    document.getElementById("players-info").textContent = "Gracze: 0 / " + maxplayers;
-
-    // LEWY DÓŁ – AVATAR + NAZWA GRACZA
-    document.getElementById("playername").textContent = playerName || "Gracz";
-    document.getElementById("playersteam").textContent = "SteamID: " + (steamID || "...");
+    document.getElementById("map-info").innerHTML = "Mapa: <strong>"+(mapName||"-")+"</strong>";
+    document.getElementById("players-info").textContent = "Gracze: 0 / " + maxPlayers;
 
     if(steamID){
-        const last2 = steamID.slice(-2).toLowerCase();
-        document.getElementById("avatar").style.backgroundImage =
-            "url(https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/"
-            + last2 + "/" + steamID + "_full.jpg)";
+        // Fetch Steam avatar and name from Steam Web API
+        const avatarUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/${steamID.slice(-2)}/${steamID}_full.jpg`;
+        document.getElementById("avatar").style.backgroundImage = `url(${avatarUrl})`;
+        document.getElementById("playersteam").textContent = "SteamID: " + steamID;
+
+        // Optionally fetch the Steam name via Steam Web API
+        fetch(`https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=YOUR_STEAM_API_KEY&steamids=${steamID}`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.response.players && data.response.players[0]){
+                document.getElementById("playername").textContent = data.response.players[0].personaname;
+            } else {
+                document.getElementById("playername").textContent = "Gracz";
+            }
+        }).catch(()=> {
+            document.getElementById("playername").textContent = "Gracz";
+        });
     }
 
-    // MUZYKA
     let aud = document.getElementById("music");
     aud.volume = (typeof volume === 'number') ? volume : 0.35;
     aud.play().catch(()=>{});
 };
 
-
 window.SetFilesTotal = function(total){
-    window._total = Number(total)||0;
-    //document.getElementById("pct").textContent = "0%";
+    window._total = Number(total) || 0;
     document.getElementById("progressline").style.width = "0%";
 };
 
 window.SetFilesNeeded = function(needed){
     const total = window._total || 0;
-    const n = Number(needed) || 0;
-    const loaded = total - n;
-    const pct = total > 0 ? Math.round((loaded / total) * 100) : 0;
-
-    // Aktualizacja paska ładowania
-    document.getElementById("progressline").style.width = pct + "%";
-
-    // Efekt błysku paska
-    const bar = document.getElementById("progressline");
-    bar.style.boxShadow = "0 0 12px white";
-    setTimeout(() => bar.style.boxShadow = "none", 280);
+    const loaded = total - (Number(needed) || 0);
+    updateProgress(loaded, total);
 };
-
 
 window.DownloadingFile = function(file){
     document.getElementById("file").textContent = file ? "Pobieranie: " + file : "";
